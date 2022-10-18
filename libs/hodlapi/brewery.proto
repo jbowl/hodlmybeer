@@ -1,0 +1,60 @@
+/*
+   https://www.openbrewerydb.org/documentation 
+
+   $ export GO_PATH=~/go
+   $ export PATH=$PATH:/$GO_PATH/bin
+   $ protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative brewery.proto
+
+
+/home/j/jsoft/github.com/jbowl/hodlmybeer/hodlmybeer
+
+   // cp -r . /home/j/jsoft/github.com/jbowl/findbrewery_root/dispatch/hodlapi
+
+   // cp -r . /home/j/jsoft/github.com/jbowl/hodlmybeer/hodlmybeer/hodlapi  copies .git
+   // cp -r . /home/j/jsoft/github.com/jbowl/hodlmybeer/brewery/hodlapi
+// cp *.go go.mod  /home/j/jsoft/github.com/jbowl/hodlmybeer/brewery/hodlapi
+cp *.go go.mod /home/j/jsoft/github.com/jbowl/hodlmybeer/hodlmybeer/hodlapi
+*/
+syntax = "proto3";
+
+option go_package = "github.com/jbowl/hodlapi";
+
+package hodlapi;
+
+service BreweryService {
+
+    rpc ListBreweries(Filter) returns (stream Brewery) {}
+
+    rpc SearchBreweries(Filter) returns (stream Brewery) {}
+
+    rpc BreweryCount(Filter) returns(BreweryCountRespose);
+
+}
+
+message Filter {
+  string query = 1; 
+}
+
+message BreweryCountRespose {
+  int32 count = 1;
+}
+
+message Brewery{
+  string id = 1;
+  string name = 2;
+  string brewery_type = 3;
+  string street = 4;
+  string address_2 = 5;
+  string address_3 = 6;
+  string city = 7;
+  string state = 8;
+  string country_province = 9;
+  string postal_code = 10;
+  string country = 11;
+  string longitude = 12;
+  string latitude = 13;
+  string phone = 14;
+  string website_url = 15;
+  string updated_at = 16;
+  string created_at = 17;
+}
