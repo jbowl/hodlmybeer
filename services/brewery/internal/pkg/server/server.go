@@ -14,7 +14,7 @@ import (
 	"syscall"
 	"time"
 
-	"brewery/internal/pkg/types"
+	"github.com/jbowl/hodlmybeer/services/brewery/internal/pkg/types"
 
 	"github.com/google/uuid"
 	"github.com/jbowl/hodlapi"

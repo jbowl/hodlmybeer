@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"brewery/internal/pkg/server"
+	"github.com/jbowl/hodlmybeer/services/brewery/internal/pkg/server"
 )
 
 func run() error {
