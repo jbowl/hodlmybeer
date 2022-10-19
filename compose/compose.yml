@@ -1,0 +1,60 @@
+services:
+  hodl:
+    
+    image: hodli
+    container_name: hodlp
+
+    ports:
+      - 50000:50000
+
+    build:
+      context: ../services/hodlmybeer
+      dockerfile: Dockerfile
+
+    environment:
+      - PORT=50000
+      - INSECURE=FALSE # TRUE and service will not use mTLS
+      - CA_CERT=/app/certs/ca/minica.pem
+      - SVR_CERT=/app/certs/client/cert.pem
+      - SVR_KEY=/app/certs/client/key.pem
+      # server cert has a brews-secure SAN
+      #   $ openssl x509 -in cert.pem -text
+      # X509v3 extensions:
+      #      X509v3 Key Usage: critical
+      #          Digital Signature, Key Encipherment
+      #      X509v3 Extended Key Usage: 
+      #          TLS Web Server Authentication, TLS Web Client Authentication
+      #      X509v3 Basic Constraints: critical
+      #          CA:FALSE
+      #      X509v3 Authority Key Identifier: 
+      #          9B:F4:AE:03:71:AF:4F:19:C9:F5:F9:C5:56:42:BD:DA:64:3C:CA:33
+      #      X509v3 Subject Alternative Name: 
+      #          DNS:'use AWS cloudwatch Service Discovery', DNS:brews-secure 'local podman container name in bridged network'
+
+      - BREWERY_ADDR=brews-secure:50051     
+    expose:
+      - 50000      
+  breweryi:
+    image: breweryi
+    container_name: brews-secure
+    ports:
+      - 50051:50051
+
+    build: 
+      context: ../services/brewery
+      dockerfile: Dockerfile            
+      network: brewsnet
+    environment:
+      - PORT=50051
+      - INSECURE=FALSE # TRUE and service will not use mTLS
+      - CA_CERT=/app/certs/ca/minica.pem
+      - SVR_CERT=/app/certs/server/cert.pem
+      - SVR_KEY=/app/certs/server/key.pem
+    expose:
+      - 50051      
+
+
+volumes:
+
+networks: 
+  brewsnet:
